@@ -26,3 +26,13 @@ Module uses native perl with a a small code footprint.
 Supports most POSIX/UNIX/Linux systems (anything with /dev/u?random devices) as well as currently supported Windows sytems.
 
 
+## Sys-Spec
+This package provides a program, and supporting class, that 
+provide details of frequently used characteristics of the
+local host to developers analyzing execution, working build 
+environments, or maintaining build numbers.
+
+  sys-spec  shell script to create build numbers and related information.
+
+  Sys::Spec supporting class for build_num.
+
