@@ -1,0 +1,29 @@
+##### lib/Sys/Spec/Module/Win32.pm @@@@@@@@@@@@@@@@@
+INSTALL
+Build.PL
+Makefile.PL
+MANIFEST
+README
+WARRANTY
+TO_DO.txt
+lib/Sys/Spec.pm
+lib/Sys/Spec/Text.pm
+lib/Sys/Spec/Module.pm
+lib/Sys/Spec/Module/Unix.pm
+lib/Sys/Spec/Module/Win32.pm
+t/010-Sys-Spec.t
+t/100-BuildNum.t
+t/110-sys-spec.t
+t/120-formatting.t
+t/130-validation.t
+t/formats.pl
+scripts/sys-spec
+scripts/sys-spec-which
+samples/FreeBSD.txt
+samples/HP-UX.txt
+samples/Linux-Debian.txt
+samples/Linux-Fedora.txt
+samples/SunOS.txt
+samples/WinXP.Net_Service_Pack_2-Microsoft.txt
+META.yml                                 Module meta-data (added by MakeMaker)
+META.json

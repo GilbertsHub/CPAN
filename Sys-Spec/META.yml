@@ -1,0 +1,57 @@
+---
+abstract: 'Retrieve available information on the current system in text file format.'
+author:
+  - 'Gilbert Healton <gilbert@healton.net>'
+build_requires: {}
+configure_requires:
+  Module::Build: 0.40
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Sys-Spec
+provides:
+  Sys::Spec:
+    file: lib/Sys/Spec.pm
+    version: 3.000
+  Sys::Spec::Internal::HARDWARE:
+    file: lib/Sys/Spec.pm
+    version: 0
+  Sys::Spec::Internal::INTERNAL_VERSIONS:
+    file: lib/Sys/Spec.pm
+    version: 0
+  Sys::Spec::Internal::OS:
+    file: lib/Sys/Spec.pm
+    version: 0
+  Sys::Spec::Internal::PERL:
+    file: lib/Sys/Spec.pm
+    version: 0
+  Sys::Spec::Internal::TEMPLATE:
+    file: lib/Sys/Spec.pm
+    version: 0
+  Sys::Spec::Internal::TIME:
+    file: lib/Sys/Spec.pm
+    version: 0
+  Sys::Spec::Internal::USER:
+    file: lib/Sys/Spec.pm
+    version: 0
+  Sys::Spec::Internal::VERSION:
+    file: lib/Sys/Spec.pm
+    version: 0
+  Sys::Spec::Module:
+    file: lib/Sys/Spec/Module.pm
+    version: 3.000
+  Sys::Spec::Module::Unix:
+    file: lib/Sys/Spec/Module/Unix.pm
+    version: 3.000
+  Sys::Spec::Module::Win32:
+    file: lib/Sys/Spec/Module/Win32.pm
+    version: 3.000
+  Sys::Spec::Text:
+    file: lib/Sys/Spec/Text.pm
+    version: 3.000
+resources:
+  license: http://dev.perl.org/licenses/
+version: 3.000

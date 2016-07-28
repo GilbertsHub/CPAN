@@ -1,0 +1,31 @@
+[] Document actions
+
+[] insert() registring replacement name DELETES any prior name, regardless
+   of heading registered under.
+
+[] spell check, again.
+
+[] Samples:
+   [] Red Hat
+   [] HP-UX
+   [] AIX
+   [] Rename Win32 to allow for:
+       [] Windows XP
+       [] Windows Vista
+       [] Windows NT
+
+[] use aggrates in languages that support them.
+
+[] If numeric time zone offset not known, attempt to calculate it.
+
+[] Linux: /sbin/lspci?
+
+[] Levels of verboseness:
+    [] Standard, which is about the current. 
+    [] Minimal.
+    [] More (CPU information, web server, memory size, swap size, etc.)
+    [] Verbose (include /etc/rc.d controlling program, more...)
+
+[] CPU information?
+
+[] Answer http://groups.archivesat.com/Linux/thread398506.htm

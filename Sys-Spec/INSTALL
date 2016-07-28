@@ -1,0 +1,36 @@
+
+--------------------------------------------------------------
+Module::Build INSTALLS
+--------------------------------------------------------------
+
+If the Module::Build module is available, the following is likely 
+the preferred way of installing Sys::Spec and friends:
+
+    perl Build.PL
+    perl ./Build 
+    perl ./Build test     #(will fail on older perls without Test::More)
+    perl ./Build install
+
+To test if your local perl supports Build.PL, execute the following
+command. If it completes without error then Build.PL is available.
+
+    perl -MModule::Build -e 1
+
+To test if Test::More is available, execute the following command:
+
+    perl -MTest::More -e 1
+
+
+--------------------------------------------------------------
+Legacy (e.g., UNIX/POSIX/LINUX) Installs
+--------------------------------------------------------------
+
+The following legacy installation is available to those without
+Module::Build but with commands that are sufficiently POSIX compatible.
+
+    perl Makefile.PL  [PREFIX=$HOME/alt-perl]
+    make 
+    make test 		# (will fail on older perls without Test::More)
+    make install
+
+#end

@@ -1,0 +1,114 @@
+#! /usr/local/bin/perl
+# perl program to find other programs
+#
+use strict;
+
+=head1 NAME
+
+sys-spec-which -- show the full path of commands on PATH in
+sys-spec specific manner.
+
+=head1 USAGE
+
+ sys-spec-path file-name
+
+=head1 DESCRIPTION
+
+A minimal "which" program that locates the absolute path of the 
+indicated program.
+Done in a pure perl manner making use of Sys::Spec (sys-spec(1)).
+
+=cut
+
+use POSIX;
+use File::Spec;
+use Sys::Spec;
+
+use vars qw( $VERSION );
+$VERSION = "1.000";
+
+my $desired = shift;
+
+$desired || die "NO FILE NAME GIVEN\n";
+
+my $sp = Sys::Spec->new;
+
+my $unixish_sw = $sp->is_unixish();
+
+my @suffixes = $sp->is_windowsish
+		? qw( .bat .exe .com )		#Microsoft Windows* extensions
+		: ();				#UNIX* extensions
+
+my @path_dirs = File::Spec->path();	#get PATH, or local equivalant
+
+
+foreach my $path_dir ( @path_dirs )
+{
+    my $path_head = File::Spec->catfile( $path_dir, "", $desired );
+    		# NOTE: extra "" empty dir is required to assure that
+		#   a proper delimiter (e.g., / or \) always follows the
+		#   last directory name.
+    foreach my $suffix ( @suffixes ? @suffixes : ( "" ) )
+    {   #look at each possible suffix
+        my $path_full = $path_head . $suffix;
+	if ( -f $path_full )
+	{   #file exists... now look into executable or not
+	    if ( -x $path_full )
+	    {
+		print $path_full, "\n";
+		exit EXIT_SUCCESS;
+	    }
+	}
+    }
+}
+
+if ( $unixish_sw )
+{   #last ditch try to find using built-in which command in case it can
+    # look in private areas
+    my $which = qx( which "$desired" 2>/dev/null );
+    if ( ( $? >> 8 ) == EXIT_SUCCESS && length($which) && -x $which )
+    {
+	print $which, "\n";
+	exit EXIT_SUCCESS;
+    }
+}
+
+print STDERR "not found: $desired\n";
+exit EXIT_FAILURE;
+
+__END__
+
+=pod
+
+=head1 OPTIONS
+
+At this time no options are supported.
+
+=head1 TO DO
+
+If this program becomes popular, the following might be added:
+
+B<--all> option to find all hits 
+
+B<--nostderr> to suppress stderr if not found.
+
+B<--quiet> to just check if file exists, without printing anything.
+
+Other options are possible (--version, --help, ...)..
+
+=head1 RETURN VALUE
+
+Exits with local systems EXIT_SUCCESS after printing the path to standard out
+if the path was found (typically 0).
+Else exits with the local systems EXIT_FAILURE after printing an error 
+message to standard error.
+
+=head1 NOTES
+
+This program was originally designed as a OS-independent way for Sys::Spec
+installation "test" to find programs.
+
+=cut
+
+#end
+

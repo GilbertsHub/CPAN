@@ -1,0 +1,766 @@
+#!/usr/local/bin/perl
+# sys-spec - extract current system's specifications
+#
+
+use strict;
+
+use 5.005;
+
+=head1 NAME
+
+sys-spec - print available information on the current system,
+application,
+build number,
+run id,
+etc.,
+
+=head1 USAGE
+
+ sys-spec  \
+	[--buildnum|installnum|patchnum|runnum=version | 
+	        --id=name=version] \
+	[--] \
+	[name1=val1 [name2=val2 [...]]] 
+
+ sys-spec  --help
+
+=cut
+
+use POSIX;			#All the world (should be) POSIX
+
+use Getopt::Long;		#standard command-line option processing
+use FileHandle;			#File I/O operations, object style.
+use File::Spec ();
+
+use Sys::Spec::Text;
+
+use vars qw( $VERSION );
+
+$VERSION = "3.000";
+
+my ( undef, undef, $myname ) =  File::Spec->splitpath( $0 );
+
+my @formats = Sys::Spec::Text->internal_formats_();
+
+my $buildnum = "1.2.3.4";
+
+
+######################################################################
+#
+#  configure all options
+#
+my $om_ = 0;		    #array offsets into $options_master{$x}{$om}
+my $om_default = $om_++;	#default value (undef if none)
+my $om_getopt  = $om_++;	#getopt argument
+my $om_help    = $om_++;	#general help text
+my $om_sample  = $om_++;	#sample help text
+my $om_sort    = $om_++;	#type of value
+		my $om_sort_buildnum =   1;    #--buildnum....
+		my $om_sort_id       =   2;    #--id
+		my $om_sort_general  =   3;    #general "new"
+		my $om_sort_text     =   4;    #general "get_text"
+		my $om_sort_help     = 100;    #--help
+
+my %options;		#actual GetOpt::Long() options
+my %option_master =	#define all options, help text, default values, ...
+  (
+	help       => [ undef,
+			"",
+			"Show help text",
+			"--help",
+			$om_sort_help ],
+	debug	   => [ 0,
+			'+', 
+			"Increment debugging level for each --debug",
+			"--debug",
+			$om_sort_general ],
+	format     => [ "",
+			"=s",
+			"Format of output.",
+			"--format=" . join( "|", @formats ),
+			$om_sort_text ],
+	prefix	   => [ "",
+			"=s",
+			"String to prefix variable names in output",
+			"--prefix=bno_",
+			$om_sort_text ],
+	buildnum   => [ undef,
+			"=s",
+			"Include BUILDNUM build number in outout",
+			"--buildnum=$buildnum",
+			$om_sort_buildnum ],
+	installnum => [ undef,
+			"=s",
+			"Include INSTALLNUM install number in outout",
+			'--installnum=$buildnum',
+			$om_sort_buildnum ],
+	patchnum   => [ undef,
+			"=s",
+			"Include PATCHNUM patch applied stamp in outout",
+			'--patchnum=$buildnum/$patchinfo',
+			$om_sort_buildnum ],
+	runnum	   => [ undef,
+			"=s",
+			"Include RUNNUM run stamp in outout",
+			'--runnum=$buildnum',
+			$om_sort_buildnum ],
+	id	   => [ undef,
+			"=s",
+			"Include custom stamp name",
+			'--id=IDNUM=$buildnum',
+			$om_sort_id ],
+  );
+
+
+######################################################################
+#
+#   HELP TEXT
+#
+
+sub help
+{
+    my $fd = shift;
+
+    my $indent = "  ";
+    my $sformat .= "$indent\%-14s \%s\n";
+
+    my $help  = "$myname \\\n";
+    my @helpkeys = sort {
+			my $r = $option_master{$a}[$om_sort] <=> 
+			        $option_master{$b}[$om_sort];
+			return $r if $r;
+			return $a cmp $b;
+    		    } keys %option_master;
+    foreach my $helpkey ( @helpkeys )
+    {
+	my $opt = $option_master{$helpkey};
+	$help .= sprintf( $sformat, "--$helpkey", $opt->[$om_help]);
+	$help .= sprintf( $sformat, "",       "# " . $opt->[$om_sample] )
+		 	      if $opt->[$om_sample];
+    }
+
+    $help .= "$indent\[--]\n";
+    $help .= "$indent\[name1=val1 [name2=val2 [...]]] \n";
+
+    no strict qw( refs );
+    print $fd $help;
+
+    return
+}
+
+######################################################################
+
+sub iv_build_num_main
+{
+    return $VERSION;
+}
+
+######################################################################
+
+sub main
+{
+    #
+    #   process any "--" command line options
+    #
+    %options = ();		#for holding results of GetOptions
+  { 
+    my @options = ();
+    #build all GetOpt stuff from %option_master
+    #  default values in %options
+    #  arguments for &GetOptions() in @options
+    foreach my $optionkey ( sort keys %option_master )
+    {
+	my $opt = $option_master{$optionkey};
+	$options{$optionkey} = $opt->[$om_default]
+		   if defined $opt->[$om_default];
+	my $optionx = "$optionkey";
+	$optionx   .= $opt->[$om_getopt] 
+	   if defined $opt->[$om_getopt];
+    	push( @options, $optionx );
+    }
+    unless ( GetOptions( \%options, @options ) )
+    {
+	help( "STDERR" );
+	exit EXIT_FAILURE;
+    }
+
+    if ( $options{'help'} )
+    {
+	help( "STDOUT" );
+	exit EXIT_SUCCESS;
+    }
+  }
+
+    # Register our version with Sys::Spec
+    Sys::Spec::Text->insert( qw(
+    	:INTERNAL_VERSIONS
+	  IV_BUILD_NUM_MAIN
+            ) );
+			# NOTE: intentional side effect of insert() call:
+			#  # if not already done, assures Sys::Spec is 
+			#    fully initialized.
+			#     # Names of all possible settings obtained.
+			#     # Any associated static values cached.
+
+    	# can only get all valid variable names AFTER insert() returns
+    my %option_names = 		#track all valid headers and formats
+              map {  my $simple_key = lc $_;	#get key name
+	             $simple_key =~ s/.*://;	#wipe out any class name
+	      	     ( $simple_key, $_ =~ /^:/ ? 0 : $_ )
+		  } Sys::Spec->get();
+	      		#   key: lc of name, without any class name
+			#   value: proper case of name, including any
+			#          class name, if variable,
+			#          Else false value for headers.
+
+    # add any popular aliases that may be useful
+    $option_names{'hostname'} = 'U_HOSTNAME'
+    		unless exists $option_names{'hostname'};
+    $option_names{'arch'} = 'U_ARCH'
+    		unless exists $option_names{'arch'};
+
+    #
+    #   map results of &GetOptions() call intoSys::Spec->new() arguments
+    #
+    my @args_new;	#generic Sys::Spec->new() arguments
+    my @args_text;	#get_text() specific arguments
+    my @args_custom;	#additional custom name=value settings
+    foreach my $optionkey ( sort keys %option_master )
+    {
+	next unless $option_master{$optionkey}[$om_sort] == $om_sort_buildnum;
+	next unless defined $options{$optionkey} &&
+	            length( $options{$optionkey} );
+
+	# found one of the main options
+	push( @args_new, "-$optionkey" => $options{$optionkey} );
+	last;
+    }
+    if ( @args_new == 0 && defined $options{'id'}  &&  length $options{'id'} )
+    {
+	push( @args_new, -id  => $options{'id'} );
+    }
+
+    #
+    #   map appropriate GetOptions() command line options to get_text() options
+    #
+    foreach my $optionkey ( sort keys %option_master )
+    {
+	next unless $option_master{$optionkey}[$om_sort] > $om_sort_id;
+	next unless defined $options{$optionkey} &&
+	            length( $options{$optionkey} );
+
+	if ( $option_master{$optionkey}[$om_sort] == $om_sort_text )
+	{
+	    push( @args_text, "-$optionkey" => $options{$optionkey} );
+	}
+	else
+	{
+	    push( @args_new, "-$optionkey" => $options{$optionkey} );
+	}
+    }
+
+    #
+    #   Look for either:
+    #     # "name" arguments giving name of setting to print, or
+    #     # "name=value" providing custom setting to include in 
+    #       generated text.
+    #
+    my @selected;			#name of values to print
+    my $fatals = 0;
+    foreach my $arg ( @ARGV )
+    {
+	if ( $arg =~ /^\w+$/ )
+	{
+	    my $true_name = $arg;
+	    if ( exists( $option_names{lc($true_name)} ) &&
+	                 ( my $true_name = $option_names{lc($arg)} ) )
+	    {   #valid name... don't know if we can extract it (yet), but
+		push( @selected, $true_name );	#save for normal fetching
+	    }
+	    else
+	    {   #unknown option name....
+	        # not just "can't fetch value", but flat out invalid name.
+		$fatals++;
+		warn( "INVALID SETTING NAME: $arg\n" );
+	    }
+	}
+	elsif ( $arg =~ /^\w+=/ )
+	{
+	    push( @args_custom, $arg )
+	}
+	else
+	{
+	    warn( "PROBLEM ARGUMENT: $arg\n" );
+	    $fatals++;
+	}
+    }
+
+    $fatals && exit EXIT_FAILURE;
+
+    my $sys_spec = Sys::Spec::Text->new(@args_new);  #get object 
+    $sys_spec || die( "$0: BAD ARGUMENTS\n" );
+
+    if ( @selected )
+    {
+	foreach my $selected ( @selected )
+	{
+	    ( my $name = $selected ) =~ s/.*:://;
+	    my $value = $sys_spec->get( $selected );
+	    printf( "\%-24s \%s\n", $name, $value );
+	}
+
+	foreach my $custom ( @args_custom )
+	{
+	    $custom =~ /^(\w+)=(.*)/ &&
+		printf( "\%-12s \%s\n", $1, $2 );
+	}
+
+	exit EXIT_SUCCESS;
+    }
+
+    my $sys_spec_text = $sys_spec->get_text( @args_text, @args_custom );
+
+    print $sys_spec_text, "\n";
+
+    exit ( $sys_spec_text ? EXIT_SUCCESS : EXIT_FAILURE );
+}
+
+&main;
+
+__END__
+
+=pod
+
+=head1 DESCRIPTION
+
+Generates a shell-style configuration file that contains information about
+the local hardware, operating system.
+The result is printed to standard out in one of several possible formats.
+
+When use is associated with an application,
+release and configuration information on that application can also be 
+included in the output.
+This includes generating time based build numbers that
+allow tracking of times output has been recompiled, or changed in other ways
+(but see RESTRICTIONS).
+
+=head1 DEFINITIONS
+
+While users are free to use any versioning system conventions they choose,
+the definitions herein heavily follow conventions described in 
+Wikipedia® at
+L<http://en.wikipedia.org/wiki/Software_version#Sequence-based_identifiers>.
+
+=head2 Version Number
+
+A series of numbers, 
+often starting at 0 or 1,
+that show the relationship of changes to a file or program over time.
+The different numbers are delimited by periods (a.k.a, dots or decimal points).
+In most systems it is wrong to treat these as a decimal point:
+1.12.5 follows 1.2.0.
+
+Classic components of a version number include:
+
+=over 4
+
+=item S< >*
+
+B<Major number>:
+a number that increments to reflect major changes to
+the associated code,
+what users see on the user interface,
+or other major changes.
+
+=item S< >*
+
+B<Minor number>:
+A number that increments with each release of a product.
+Typically these are releases are planned on the long term.
+This is where new features should be planned for.
+
+=item S< >*
+
+B<Point release>:
+A number that increments with each interim release,
+usually for bug fixes or other repairs.
+Typically these releases are results of short term planning, 
+or emergency conditions.
+Important features can be released here as well,
+though that is often not the major use of point releases.
+
+=back
+
+There are many variations to this system.
+
+=head2 Release ID
+
+The formal, unique, identification for a release.
+This includes any version numbers, build numbers,
+and any other identifying information the provider includes in the
+number.
+
+=head2 Build Number
+
+A number that identifies a specific attempt to build a component.
+
+Typically automated build processes run B<sys-spec> to generate
+a build numbers.
+In POSIX environments this is often from Makefiles.
+B<sys-spec> build numbers are time-based with a
+resolution to six-minute intervals.
+Short enough to give assurance that seriously different builds can get
+unique numbers yet small enough for people to work with.
+
+B<sys-spec> build numbers use the following convention I<yyooohhx> where 
+
+=over 6
+
+=item S< >yy:
+
+Current year, less 2000.
+Though its a long time in the future,
+I<well written> programs parsing build numbers will allow for thre-digit years
+starting in 2100.
+While today's software is not expected to survive that long it's
+amazing how long data formats persist.
+
+=item S< >ooo:
+
+Ordinal day number in the year (001 to 366).
+Often, but incorrectly called, Julian Date.
+
+=item S< >hh:
+
+Hour within the day, using 24 hour clock (00 to 23).
+
+=item S< >x
+
+Six minute interval within the hour (0 to 9).
+This divides an hour into 1/10'h hour increments.
+
+All times are based on UTC (foremally called GMT)
+and are independent of any local "savings time" conventions.
+Leap seconds do not change the result of this value as it goes by minute,
+not seconds.
+
+
+=back
+
+=head1 OPTIONS
+
+=head1 S< >S< >Command Line Options
+
+Command line options all start with double hyphens (C<-->) to match POSIX® 
+conventions.
+The available options are:
+
+=over +2
+
+=over +2
+
+=item --buildnum=version
+=item --installnum=version
+=item --patchnum=version
+=item --runnum=version
+=item --id=name=version
+
+Type code:
+If the execution is associated with a version of a particular program
+then one of these options are used to specify both the build number
+I<and the basic identification of what is the number is for.>
+
+This later is intended when collecting information to be returned 
+with problem or status reports for the program of the given version.
+
+The different commands create different standard symbolic definitions in the
+output
+(BUILDNUM, INSTALLNUM, ...).
+
+The B<--id> option allows users to define their own name in addition to
+the version number.
+
+The default is none, which does not produce versioning information,
+though a build-number time stamp is still produced.
+
+=item --prefix=ppp
+
+The symbolic names produced by B<sys-spec> have a standard prefix before them
+in the style I<*>B<num_>, where * is the first letter of the standard 
+type code.
+
+B<--id> options should always have a B<--prefix> option associated with them.
+
+=item --format=sh|ecma|perl|xml
+
+Selects the type of code to be printed to standard out.
+Default is B<sh> for commands acceptable to the classic UNIX® and POSIX®
+B<sh> Borne shells.
+
+B<ecma> is the standard name for the JavaScript standard,
+known as ECMAScript.
+
+=back
+
+=back
+
+=head1 S< >S< >User Defined Name/Value Pairs
+
+Additional symbolic values to be included in the created configuration file 
+use a NAME=VALUE notation.
+These values must follow any B<--> options.
+If the value contains spaces the value must be quoted:
+
+   GREETINGS="Hello, World"
+
+=head1 ENVIRONMENT
+
+B<BUILDNUM_TIME0> (build time zero): 
+Time value to use, as a B<time_t> value, to use for calculating 
+build numbers.
+Allows automated or sequential builds to apply the same build number
+to all builds done in the same "batch",
+regardless of how long the builds take.
+
+=head1 NOTES
+
+This is the third generation of programs I've written that generate
+build numbers and/or "dumps" system information.
+This rewrite addresses several issues in previous releases along
+with assuring it is fully open source.
+
+=head1 RESTRICTIONS
+
+This program produces time-based build numbers to six-minute intervals.
+
+When building larger components build of smaller components with
+their own build numbers,
+consider not rebuilding the smaller components unless their dependencies 
+also change.
+
+=head1 SAMPLE FILES
+
+The samples herein must be considered typical values.
+Actual values are will vary between different systems,
+and even different releases of operating systems,
+the local perl, and the B<Sys::Spec> class itself.
+
+Long lines are also manually broken into shorter lines to print better.
+
+=head2 Microsoft Windows® Operating System
+
+ #####################################################################
+ #
+ #    TIME INFORMATION
+ #
+ bno_TSTAMP_CODE="08272216";
+ bno_TIME_T="1222638000";		#raw build time
+ bno_TIME_LOCAL="2008-09-28T17:40:00";	#local build time
+ bno_TIME_UTC="2008-09-28T21:40:00";		#UTC BUILD TIME (GMT)
+
+ #####################################################################
+ #
+ #    HARDWARE INFORMATION
+ #
+ bno_HOSTNAME="daneel";		#host name
+ bno_UARCH="x86";			#architecture
+
+ #####################################################################
+ #
+ #    OS INFORMATION
+ #
+ bno_UOS="Windows NT";			#operating system
+ bno_UOSREL="5.1";		#release of OS
+ bno_PERL_OS_NAME="MSWin32";		#OS name, as perl sees it
+ bno_VENDOR="Microsoft Corporation";	#vendor
+ bno_RELEASE="Build 2600 (Service Pack 2)";	#release
+
+
+ #######################################################################
+ #
+ #    PERL INFORMATION
+ #
+ bno_PERL_VERSION="5.010000";
+ bno_PERL_INC="lib;C:/Perl/site/lib;C:/Perl/lib;.";
+
+
+ #######################################################################
+ #
+ #    CURRENT USER INFO
+ #
+ bno_UID=0;		#user ID number
+ bno_UNAME="Gilbert";		#  Gilbert
+ bno_GID=0;		#user ID number
+ bno_GNAME="";		# 
+
+
+=head2 Linux (Fedora)
+
+
+ #####################################################################
+ #
+ #    TIME INFORMATION
+ #
+ bno_BUILDNUM="08272035";
+ bno_TIME_T="1222572634";		#raw build time
+ bno_TIME_LOCAL="2008-09-27T23:30:34";	#local build time
+ bno_TIME_UTC="2008-09-28T03:30:34";		#UTC BUILD TIME (GMT)
+
+ #####################################################################
+ #
+ #    VERSION INFORMATION
+ #
+ bno_VERSION_BUILD="1.0.08272035";
+ bno_VERSION="1.0";
+ bno_VERSION2="1.0";
+ bno_VERSION1="1";
+
+ #####################################################################
+ #
+ #    HARDWARE INFORMATION
+ #
+ bno_HOSTNAME="foster.home";		#host name
+ bno_UARCH="i686";			#architecture
+
+ #####################################################################
+ #
+ #    OS INFORMATION
+ #
+ bno_UOS="Linux";			#operating system
+ bno_UOSREL="2.6.26.3-14.fc8";		#release of OS
+ bno_PERL_OS_NAME="linux";		#OS name, as perl sees it
+ bno_VENDOR="Fedora";	#vendor
+ bno_RELEASE="8";	#release
+ bno_CODENAME="Werewolf";	#codename
+
+
+ #####################################################################
+ #
+ #    PERL INFORMATION
+ #
+ bno_PERL_VERSION="5.008008";
+ bno_PERL_INC="lib:/home/working/perl/Sys-Spec/blib/lib:
+   /home/working/perl/Sys-Spec/blib/arch:
+   /usr/lib/perl5/site_perl/5.8.8/i386-linux-thread-multi:
+   /usr/lib/perl5/site_perl/5.8.7/i386-linux-thread-multi:
+   /usr/lib/perl5/site_perl/5.8.6/i386-linux-thread-multi:
+   /usr/lib/perl5/site_perl/5.8.5/i386-linux-thread-multi:
+   /usr/lib/perl5/site_perl/5.8.8:/usr/lib/perl5/site_perl/5.8.7:
+   /usr/lib/perl5/site_perl/5.8.6:/usr/lib/perl5/site_perl/5.8.5:
+   /usr/lib/perl5/site_perl:
+   /usr/lib/perl5/vendor_perl/5.8.8/i386-linux-thread-multi:
+   /usr/lib/perl5/vendor_perl/5.8.7/i386-linux-thread-multi:
+   /usr/lib/perl5/vendor_perl/5.8.6/i386-linux-thread-multi:
+   /usr/lib/perl5/vendor_perl/5.8.5/i386-linux-thread-multi:
+   /usr/lib/perl5/vendor_perl/5.8.8:/usr/lib/perl5/vendor_perl/5.8.7:
+   /usr/lib/perl5/vendor_perl/5.8.6:/usr/lib/perl5/vendor_perl/5.8.5:
+   /usr/lib/perl5/vendor_perl:
+   /usr/lib/perl5/5.8.8/i386-linux-thread-multi:
+   /usr/lib/perl5/5.8.8:.";
+
+
+ #####################################################################
+ #
+ #    CURRENT USER INFO
+ #
+ bno_UID=500;		#user ID number
+ bno_UNAME="working";		#  Working Account
+ bno_GID=500;		#user ID number
+ bno_GNAME="working";		# 
+
+
+=head1 BACKGROUND
+
+B<sys-spec> grew from prior concepts for generating build numbers
+for automated build systems.
+
+Once upon a time a tiny program was written to generate 
+a file containing simple time-based build numbers that
+automated build systems could used to assure unique file names
+and positive identification of builds on production systems.
+
+Over time additional information on the local OS and hardware was
+added to assure the details of the actual build system were also 
+known to aid in diagnosing problems.
+Then the program was run on production systems to include useful 
+information in trouble reports sent back to developers.
+It also provided a quick and easy way for support personnel to 
+inventory some information about production systems.
+
+The B<sys-spec> program is a complete rewrite of all prior programs
+that went under a variety of names.
+The new design leverages the power of perl to not only 
+span many operating systems but be less susceptible to 
+software entropy regarding maintenance and enhancements over time.
+
+This author has found time-based build numbers very useful in
+large applications composed of many parts with separate builds.
+Time based build numbers provide a uniform comparison across all
+components, and even between interrelated applications,
+when compared to version numbers that vary independently over time. 
+
+The intent here is to append B<sys-spec> build numbers
+on the end of the regular release number
+(e.g, 1.2.3.I<sys-spec>).
+As I<sys-spec> build numbers are time based,
+increasing values represent later time.
+This allows people in the know to get a flavor of how
+different releases relate to each other.
+
+
+=head1 ENVIRONMENT
+
+If the environment variable B<SYS_SPEC_TIME0> exists when B<new> is called
+it must contain the “official time” for the build,
+as returned by perl's core B<time>() function.
+If nothing else, the following can set the value in a Borne shell script:
+
+ SYS_SPEC_TIME0=`perl -e 'print time, "\n"';
+ export SYS_SPEC_TIME0
+
+Automated build systems that set SYS_SPEC_TIME0 at the start of a 
+series of builds are assured that the same build numbers will be 
+generated across the entire build sequence,
+regardless of how long the build takes.
+
+Builds from different systems can have the same build number by 
+starting builds in the middle of the six minute window.
+The same start time should be used despite variations of system clocks 
+and actual start times due to local loads.
+
+=head1 TRADEMARKS
+
+I<Microsoft®> and I<Windows® Operating System> are registered trademarks of Microsoft Corp.
+(L<htp://www.microsoft.com>)
+
+I<POSIX®> is a registered trademark of the IEEE Inc. 
+(L<http://www.ieee.org/>)
+
+I<UNIX®> is a registered trademark of The Open Group in the US and other countries.
+(L<http://www.opengroup.org/>)
+
+I<Wikipedia®> is a registered trademark of the Wikimedia Foundation, Inc.
+(L<http://www.wikimediafoundation.org/>)
+
+
+=head1 COPYRIGHT, LICENSE, and WARRANTY
+
+This program and documentation is copyright 2008 by Gilbert Healton.
+All rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=head2 NO WARRANTY
+
+Because the program is licensed free of charge, there is no warranty.
+
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED 
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, 
+THE IMPLIED WARRANTIES OF MERCHANTIBILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.
+
+
+=cut
+
+#end
