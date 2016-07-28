@@ -3,7 +3,7 @@ Getopt::Object and Getopt::ObjectSimple are copyright (C) 2011-2012 by Gilbert H
 OVERVIEW
 ---------------------------
 
-Getopt::Object and Getopt::ObjectSimple provided command line parsing 
+Getopt::Object and Getopt::ObjectSimple provide command line parsing 
 in true object format with additional features to Getopt::Long this
 author finds useful. Getopt::ObjectSimple provides a minimalist 
 approach with Getopt::Object providing the most features.
