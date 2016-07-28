@@ -1,0 +1,12 @@
+# version of package (used by Build.PL and Makefile.PL)
+$VERSION = '0.004';
+$VERSION_PACKAGE = $VERSION;
+
+#       $VERSION is value that Makefile.PL finds, so it must have 
+#                the proper number.
+#       $VERSION_PACKAGE is global we copy the package version 
+#                into for use by callers using 'require'. Such 
+#                callers redefine $VERSION to their version, rather
+#                than keeping the package version. See Build.PL.
+
+1; #end

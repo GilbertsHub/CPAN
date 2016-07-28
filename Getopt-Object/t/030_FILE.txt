@@ -1,0 +1,12 @@
+# t/30-FILE.txt
+# Copyright 2011 by Gilbert Healton
+## :FILE arguments
+
+--FILE1=hello
+
+--FILE2
+
+    world
+                        
+--FILEbool
+
