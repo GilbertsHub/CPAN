@@ -1,0 +1,17 @@
+MANIFEST
+README
+WARRANTY
+Build.PL
+lib/Random/BestTiny.pm
+lib/Random/BestTiny/moduleList.pm
+lib/Random/BestTiny/ApiRand.pm
+lib/Random/BestTiny/ApiUnix.pm
+lib/Random/BestTiny/ApiWin32.pm
+lib/Random/BestTiny/ApiXxx.pod
+t/010-Random-BestTiny-ApiRand.t
+t/010-Random-BestTiny-ApiUnix.t
+t/010-Random-BestTiny-ApiWin32.t
+t/020-Random-BestTiny.t
+t/lib/tLib.pm
+META.yml
+META.json

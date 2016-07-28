@@ -1,0 +1,48 @@
+{
+   "abstract" : "Random numbers using best API from local kernel",
+   "author" : [
+      "Gilbert Healton <gilbert@healton.net>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Random-BestTiny",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.40"
+         }
+      }
+   },
+   "provides" : {
+      "Random::BestTiny::ApiRand" : {
+         "file" : "lib/Random/BestTiny/ApiRand.pm",
+         "version" : 0
+      },
+      "Random::BestTiny::ApiUnix" : {
+         "file" : "lib/Random/BestTiny/ApiUnix.pm",
+         "version" : 0
+      },
+      "Random::BestTiny::ApiWin32" : {
+         "file" : "lib/Random/BestTiny/ApiWin32.pm",
+         "version" : 0
+      },
+      "Random::BestTiny::moduleList" : {
+         "file" : "lib/Random/BestTiny/moduleList.pm",
+         "version" : 0
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.1"
+}

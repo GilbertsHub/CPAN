@@ -1,0 +1,152 @@
+# ApiXxx - documentation on Api use and internals
+
+=pod
+
+=head1 NAME
+
+Random::BestTiny::APiXxx - generic documentation for Random::BestTiny 
+APIs.
+
+=head1 USAGE
+
+ $rapi = Random::BeastOs::APiXxx->new_(); #return object for ApiXxx
+ $bestInfo  = $rapi->best_info();          #return optimization hints to caller
+ $bestBytes = $rapi->best_bytes();         #return optimimum block size
+ $randomBytes = $rapi->rawz( $blocksize ); #return $blocksize random bytes
+
+=over 4 
+
+STOP!
+The APiXxx classes are internal to Random::BestTiny
+and are only intended to be used within Random::BestTiny.
+See that class if you just want random numbers.
+Random::BestTiny::APiXxx clsses should only be consulted by 
+developers working on Random::BestTiny.
+
+=back
+
+The generic name Xxxx is used to represent the different, 
+and future,
+operating systems supported by Random::BestTiny.
+APiXxx is the corresponding API.
+The currently supported APIs follow:
+
+    ApiUnix   For UNIX operating systems, and compatiables, with
+              the /dev/random and /dev/urandom devices.
+    ApiWin32  For the Microsoft Windows operating systems with
+              the Win32 and Win32::API packages, as released with
+              Active State perl.
+    ApiRand   A fail-safe API that uses normal perl random numbers.
+              While of lower quality ApiRand will work on any
+              system until a better replacement can be found or made.
+              Also used when the high-quality/volume class
+              Math::Random::Secure is present.
+
+=head1 DESCRIPTION
+
+Each APiXxx class provides the best known random number available to
+the Xxxx operating system.
+
+If the local system has specialized hardware, or software, that can produce
+random numbers superior to the local operating system then customized modules
+can be written.
+See CUSTOMIZATIONS.
+
+=head2 new_();
+
+Obtain a low-level UNIX compatiable random number object.
+Random::BestTiny->new() calls this to return an API object of 
+the correct type for the local OS to the caller.
+
+While this constructor has no arguments,
+it inherits useful methods from it's SUPER class Random::BestTiny.
+
+Returns a random number object for the Xxxx operating system.
+This constructor is only to be called from within the super class Random::BestTiny
+and never directly by applications.
+
+After some additional initialization within Random::BestTiny
+this object is returned by Random::BestTiny->new() requests.
+
+=head2 $rboa->best_info()
+
+Intended for application to access and is
+therefore documented in Random::BestTiny().
+
+=head2 $rbos->best_bytes()
+
+INtended for application to access and is
+therefore documented in Random::BestTiny().
+
+=head2 $rboa->rawz()
+
+Returns string of random bytes of the requested length as if sysread() read 
+from a binary file.
+
+=over 2
+
+=over 4
+
+=item blocksize
+
+Number of bytes to return.
+
+The number of returned bytes is typically rounded to be an even multiple
+of the current "best_bytes" size.
+
+=back
+
+=back
+
+This is the low-level method that Random::BestTiny uses to access 
+random values.
+It returns random bytes in packed format which callers must properly 
+unpack.
+
+Tip: these bytes can be processed without regard to 
+the byte ordering of the local machine or network.
+
+Note:
+there is nothing stopping application programs from accessing this method
+aside from the fact the interface is crude and delivers binary bytes in
+a format not suitable for most random number users.
+
+=head1 CUSTOMIZATIONS
+
+Extending Random::BestTiny to use new sources of random numbers should be
+fairly easy.
+Bascially a new API is needed and Random::BestTiny is then convinced to use it.
+
+The initial test, or cases where developers do not have write access to
+installed perol modules,
+can simply add a new directory for Random::BestTiny 
+
+
+=head1 TRADEMARKS
+
+Active State Perl is a trademark of ActiveState Tool Corporation.
+
+AIX is a trademark of IBM, Inc.
+
+HP-UX is a trademark  of HP in U.S.A and other countries.
+
+Linux is a registered trademark of Linus Torvalds.
+
+Microsoft and Microsoft Windows are
+registered trademarks of Microsoft Corporation
+both in the United States and Internationally.
+
+Solaris is a trademark of Sun Microsystems, Inc.
+
+UNIX is a registered trademark in the United States and other countries,
+licensed exclusively through X/Open Company Ltd.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2011 by Gilbert Healton.
+
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
+

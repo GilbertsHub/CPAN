@@ -1,0 +1,78 @@
+
+OVERVIEW
+---------------------------
+
+Provides a small number of high-quality random numbers to calling
+applications using a small, pure-perl, class.
+
+Goes beyond the traditional limits of perls rand() built-in by
+accessing the random-number API found in most modern kernals. 
+In typical environments these kernal APIs provide high-quality, 
+cryptographically secure, random numbers to knowledgable applications.
+The Random::BestTiny class bridges the vast differences in accessing 
+these APIs across different kernel implementations. If desired,
+local developers can add their own random number subclasses to the class.
+
+If the the large Math::Random::Secure class is present, Random::Best::Tiny
+assumes perl's built-in rand() method was overridden by Math::Random::Secure
+to produce large numbers of high-quality random numbers and will use
+that rand() method to get random numbers.
+
+
+INSTALLING
+---------------------------
+This module can be installed like any other CPAN module
+
+To manually install, expand the the arcive, then within the
+archive directory,
+
+        perl Build.PL
+        perl Build
+        perl Build test
+        perl Build fakeinstall	#optional preinstall dry-run
+        perl Build install
+
+         # Note: Unix tests may block for periods of time due to high
+           consumption of random numbers.
+
+To install in an alternate directory, such as a temporary directory to 
+review the file, change the first command to have the target directory:
+
+        perl Build.PL --destdir $the_directory
+
+
+REBUILDING
+---------------------------
+        perl realclean;		#clear all standard temporary files
+        perl Build.PL;		#generate the Build script
+	perl Build dist		#build new
+	perl Build distcheck	#check distribution
+
+
+
+COPYRIGHT, LICENSE, and WARRANTY
+---------------------------
+
+This program and documentation is copyright 2010 by Gilbert Healton.
+All rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+  NO WARRANTY
+
+Because the program is licensed free of charge, there is no warranty.
+
+  THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED 
+  WARRANTIES, INCLUDING, WITHOUT LIMITATION, 
+  THE IMPLIED WARRANTIES OF MERCHANTIBILITY
+  AND FITNESS FOR A PARTICULAR PURPOSE.
+
+
+NOTES
+---------------------------
+ http://obsidianrook.com/devnotes/talks/writing_cpan_modules/01-writing_cpan_modules.html
+
+
+--
+

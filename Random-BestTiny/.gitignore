@@ -1,0 +1,8 @@
+blib/
+Build
+_build
+*.tar.gz
+tmp/
+.*.swp
+*.tmp
+
