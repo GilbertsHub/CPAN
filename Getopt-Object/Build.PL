@@ -24,6 +24,13 @@ $class = Module::Build->new
 		"Extend Getopt::Long to easily create and maintain command line options",
 	dist_author	=> 'Gilbert Healton <gilbert@healton.net>',
 
-      )->create_build_script;
+        meta_merge      => {
+	    repository      => {
+	      type   =>  "git",
+	      url    =>  "git:/github.com/GilbertsHub/CPAN/Getopt-Object",
+	      web    =>  "https://github.com/GilbertsHub/CPAN/Getopt-Object" },
+	}
+
+	  )->create_build_script;
 
 #end

@@ -36,3 +36,9 @@ environments, or maintaining build numbers.
 
   Sys::Spec supporting class for build_num.
 
+
+# Interesting Resources About CPAN
+
+* http://search.cpan.org/~dagolden/CPAN-Meta-2.150005/lib/CPAN/Meta/Spec.pm 
+* http://neilb.org/2015/10/18/spotters-guide.html
+

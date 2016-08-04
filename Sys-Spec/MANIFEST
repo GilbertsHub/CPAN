@@ -25,5 +25,5 @@ samples/Linux-Debian.txt
 samples/Linux-Fedora.txt
 samples/SunOS.txt
 samples/WinXP.Net_Service_Pack_2-Microsoft.txt
-META.yml                                 Module meta-data (added by MakeMaker)
+META.yml
 META.json

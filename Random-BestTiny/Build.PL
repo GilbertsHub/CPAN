@@ -21,6 +21,13 @@ $class = Module::Build->new
 		"Random numbers using best API from local kernel",
 	dist_author	=> 'Gilbert Healton <gilbert@healton.net>',
 
+        meta_merge      => {
+	    repository      => {
+	      type   =>  "git",
+	      url    =>  "git:/github.com/GilbertsHub/CPAN/Ramdom-BestTiny",
+	      web    =>  "https://github.com/GilbertsHub/CPAN/Ramdom-BestTiny" },
+	}
+
       )->create_build_script;
 
 #end

@@ -55,3 +55,7 @@ provides:
 resources:
   license: http://dev.perl.org/licenses/
 version: 3.000
+x_repository:
+  type: git
+  url: git:/github.com/GilbertsHub/CPAN/Sys-Spec
+  web: https://github.com/GilbertsHub/CPAN/Sys-Spec

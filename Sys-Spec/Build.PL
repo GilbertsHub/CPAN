@@ -72,5 +72,12 @@ $class->new
 		"in text file format.",
 	dist_author	=> 'Gilbert Healton <gilbert@healton.net>',
 
+        meta_merge      => {
+	    repository      => {
+	      type   =>  "git",
+	      url    =>  "git:/github.com/GilbertsHub/CPAN/Sys-Spec",
+	      web    =>  "https://github.com/GilbertsHub/CPAN/Sys-Spec" },
+	}
+
       )->create_build_script;
 
