@@ -13,7 +13,7 @@ The Random::BestTiny class bridges the vast differences in accessing
 these APIs across different kernel implementations. If desired,
 local developers can add their own random number subclasses to the class.
 
-If the the large Math::Random::Secure class is present, Random::Best::Tiny
+If the the large Math::Random::Secure class is present, Random::BestTiny
 assumes perl's built-in rand() method was overridden by Math::Random::Secure
 to produce large numbers of high-quality random numbers and will use
 that rand() method to get random numbers.
