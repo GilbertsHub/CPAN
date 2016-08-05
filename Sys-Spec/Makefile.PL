@@ -8,6 +8,19 @@ WriteMakefile(
 
     EXE_FILES	    => [ qw( scripts/sys-spec ) ],
     INST_SCRIPT	    => "bin",
+
+    META_MERGE	    => {
+
+	'meta-spec'   => { version => 2 },
+
+	resources     => {
+	    repository      => {
+	      type   =>  'git',
+	      url    =>  'git://github.com/GilbertsHub/CPAN',	#/Sys-Spec
+	      web    =>  'https://github.com/GilbertsHub/CPAN', #/Sys-Spec 
+	      },
+	},
+    },
 );
 
 sub MY::postamble

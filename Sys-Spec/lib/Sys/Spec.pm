@@ -1090,6 +1090,10 @@ the authour would really like to hear from you.
 Any corrections to documentation or bug fixes would also be apprciated 
 to no __END__.
 
+=head1 REPOSITORY
+
+https://github.com/GilbertsHub/CPAN and see Sys-Spec therein.
+
 =head1 COPYRIGHT, LICENSE, and WARRANTY
 
 This program and documentation is copyright 2008 by Gilbert Healton.

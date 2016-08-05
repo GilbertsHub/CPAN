@@ -24,8 +24,9 @@ $class = Module::Build->new
         meta_merge      => {
 	    repository      => {
 	      type   =>  "git",
-	      url    =>  "git:/github.com/GilbertsHub/CPAN/Ramdom-BestTiny",
-	      web    =>  "https://github.com/GilbertsHub/CPAN/Ramdom-BestTiny" },
+	      url    =>  "git:/github.com/GilbertsHub/CPAN",	#/Ramdom-BestTiny
+	      web    =>  "https://github.com/GilbertsHub/CPAN",	#/Ramdom-BestTiny"
+	      }
 	}
 
       )->create_build_script;

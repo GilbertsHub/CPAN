@@ -485,6 +485,9 @@ useful, but it is provided "as is"
 without express or implied warranties. 
 For details, see the full text of the license in the file LICENSE.
 
+=head1 REPOSITORY
+
+https://github.com/GilbertsHub/CPAN and see Getopt-Object therein.
 
 =head1 ACKNOWLDGEMENTS
 

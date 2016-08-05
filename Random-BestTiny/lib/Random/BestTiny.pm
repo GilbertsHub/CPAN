@@ -1081,6 +1081,10 @@ read-only media, such as CDs, or in kiosk envronments.
 
 =back
 
+=head1 REPOSITORY
+
+https://github.com/GilbertsHub/CPAN and see Random-BestTiny therein.
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2011 by Gilbert Healton. 

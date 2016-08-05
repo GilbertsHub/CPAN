@@ -27,8 +27,8 @@ $class = Module::Build->new
         meta_merge      => {
 	    repository      => {
 	      type   =>  "git",
-	      url    =>  "git:/github.com/GilbertsHub/CPAN/Getopt-Object",
-	      web    =>  "https://github.com/GilbertsHub/CPAN/Getopt-Object" },
+	      url    =>  "git:/github.com/GilbertsHub/CPAN",	  # Getopt-Object
+	      web    =>  "https://github.com/GilbertsHub/CPAN" }, # Getopt-Object
 	}
 
 	  )->create_build_script;

@@ -233,6 +233,10 @@ useful, but it is provided “as is” and without any express
 or implied warranties. For details, see the full text of
 the license in the file LICENSE.
 
+=head1 REPOSITORY
+
+https://github.com/GilbertsHub/CPAN and see Getopt-Object therein.
+
 =head1 ACKNOLDGEMENTS
 
 To S<Johan Vromans E<lt>jvromansE<64>squirrelE<46>nlE<gt>>,

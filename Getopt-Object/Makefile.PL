@@ -16,8 +16,8 @@ WriteMakefile(
 	resources     => {
 	    repository      => {
 	      type   =>  'git',
-	      url    =>  'git://github.com/GilbertsHub/CPAN/Getopt-Object',
-	      web    =>  'https://github.com/GilbertsHub/CPAN/Getopt-Object' 
+	      url    =>  'git://github.com/GilbertsHub/CPAN',	#/Getopt-Object
+	      web    =>  'https://github.com/GilbertsHub/CPAN', #/Getopt-Object 
 	      },
 	},
     },
