@@ -2,7 +2,8 @@
 # Copyright 2011 to 2012 by Gilbert Healton
 
 use strict;
-use warnings;           #ZZZZZZZZZZZZZZZZZZZZZZZZ
+
+our $VERSION;  $VERSION = '0.005';	#VERSION number
 
 package Getopt::Object;
 
@@ -50,8 +51,8 @@ Getopt::Object--Enhanced command line option processing via true object class.
 
 Getopt::Object provides an API to the classic Getopt::Long 
 command line parser that is
-very simple to use in small programs and
-enhanced power to larger programs with more complex option requirements.
+very simple to use in small programs along with
+enhanced power for programs with more complex option requirements.
 
 This document is only covers the basics of using the features 
 most people may use,
@@ -84,8 +85,9 @@ Only the most popular of such are described in this document.
 Much more details on this subject are found in B<Getopt::ObjectPod>.
 
 Successful constructor calls
-return a reference to a blessed hash object containing all option values.
-This hash is keyed by the basic option name.
+return a reference to a blessed hash object containing 
+keys for all option values.
+The keys are the basic option names.
 
 Failures return false values leaving option settings unavailable
 to the caller with messages normally written to standard error
@@ -100,7 +102,9 @@ useful in large applications spread over many modules:
     ...
     my $optobj = Getopt::Object->singleton(); #reget options
 
-Some interesting extensions are described in Getopt::ObjectPod.
+Some interesting extensions,
+such as having other modules define their own command line options,
+are described in Getopt::ObjectPod.
 
 =head2 new() constructor (special)
 
@@ -108,7 +112,7 @@ The B<new> constructor is called identically to the B<singleton>()
 constructor but returns a unique option object.
 
 B<new>() would be used if additional, independent,
-options from sources other than command lines need to be parsed.
+options from sources other than the main command line need to be parsed.
 See Getopt::ObjectPod for more details.
 
 
@@ -215,7 +219,7 @@ not changed from the command line.
 While most command line options only have a single name,
 keys accept a series of pipe (C<|>) delimited names for the option.
 The first name is primary and 
-is used to access the option setting in the returned object.
+is the hash key to access the option setting in the returned object.
 
     'debug|z+' => 0             # --debug and z alias
 
@@ -226,7 +230,7 @@ is used to access the option setting in the returned object.
 Option names may be followed by an optional special character 
 defining how the options are handled.
 This character is often followed by additional settings
-controlling such handling.
+providing specific handling.
 
 Option handling can be grouped by broad classes:
 
@@ -334,8 +338,9 @@ The following would leave the "file" options in @ARGV:
 Fatal errors normally cause the constructor to return a false value.
 The contents of @ARGV are undefined on this condition.
 
-Private members can also be present in the hash.
-Such always start with a colon and are to be ignored by callers.
+Keys private to the class can also be present in the hash.
+Such always start with a colon and are to be ignored by callers
+and never presented to outside users.
 
 
 =head1 SINGLETONS
@@ -351,7 +356,7 @@ by using:
 
 The big restrictions are that the main program must
 have previously captured the command line arguments with a 
-singleton constructor call
+run time singleton constructor call
 and the later singleton calls do not have arguments.
 
 =head1 EXAMPLES
@@ -405,7 +410,7 @@ the Getopt::Object constructor failing due to the double equal (C<==>).
 
 =head2 With Single Letter Bundled Options
 
-The POSIX/UNIX world usually allows single-letter options, 
+The POSIX/Linux world usually allows single-letter options, 
 with single hyphens, to be "bundled".
 A bundled "-dv" is the same as "-d" and "-v".
 
@@ -426,9 +431,9 @@ A bundled "-dv" is the same as "-d" and "-v".
                 );
 
 The best practice of using single-character options 
-is to have a long option name, 
+is to have long option names, 
 such as C<--debug>, be the prime name,
-and the single letter option, C<-d>, be secondary.
+and the corresponding single letter option, C<-d>, be secondary.
 
 =head2 With Hash References
 
@@ -474,7 +479,7 @@ of B<Getopt::Object> that are not covered herein.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011-2012 by Gilbert Healton
+Copyright 2011-2016 by Gilbert Healton
 
 This module is free software; you can redistribute it and/or modify 
 it under the same terms as Perl 5.8.10, or later. For more details, see
@@ -487,7 +492,7 @@ For details, see the full text of the license in the file LICENSE.
 
 =head1 REPOSITORY
 
-https://github.com/GilbertsHub/CPAN and see Getopt-Object therein.
+https://github.com/GilbertsHub and see CPAN/Getopt-Object therein.
 
 =head1 ACKNOWLDGEMENTS
 
@@ -841,8 +846,8 @@ sub singleton
 {
      return $singleton if $singleton;
 
-       # check if .pm module requesting unavailable singleton
-     return undef if @_ == 1;   #singleton did NOT parse actual args
+       # check if library .pm module requesting unavailable singleton
+     return undef if @_ == 1;   #singleton has not yet been called!
 
        # call new() with a default of :BEGIN => 2 then remember the result
      my $proto = shift;
@@ -856,7 +861,7 @@ sub DESTROY
 {
     my $self = shift;
 
-    #in a more complex design this used to do things... keep anyway
+    #older, more complex code used to do things... keeping anyway
 }
 
 

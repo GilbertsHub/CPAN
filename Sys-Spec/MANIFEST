@@ -4,6 +4,7 @@ Build.PL
 Makefile.PL
 MANIFEST
 README
+VERSION_PACKAGE
 WARRANTY
 TO_DO.txt
 lib/Sys/Spec.pm

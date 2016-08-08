@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME            => 'Sys::Spec',
-    VERSION_FROM    => 'lib/Sys/Spec.pm',
+    VERSION_FROM    => 'VERSION_PACKAGE',
 
     EXE_FILES	    => [ qw( scripts/sys-spec ) ],
     INST_SCRIPT	    => "bin",

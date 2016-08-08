@@ -6,6 +6,8 @@
 
 use strict;
 
+our $VERSION;  $VERSION = '0.005';	#VERSION number
+
 =pod
 
 =head1 NAME
@@ -109,7 +111,7 @@ The following would leave the "file" arguments in @ARGV:
 
 Fatal errors normally cause the constructor to return a false value.
 The contents of @ARGV are undefined on this condition.
-Very server problems result in die calls, which can be trapped.
+Very severe problems may result in die calls, which can be trapped.
 
 =head2 Mandatory options
 
@@ -119,7 +121,7 @@ if the program is to run.
 
 A diagnostic is printed and a constructor failure is returned
 if such options have values that are not well set at the end of the call.
-A default of C<undef> or empty string ("") are considered not well set.
+Values of C<undef> or empty string ("") are considered not well set.
 
 Beware: a zero (0) is considered well set.
 
@@ -141,6 +143,7 @@ to direct callers of Getopt::Long (as of 2011-12).
                 'verbose:1' => 0,        #--verbose sets 1 if no arg
                 );        #baz must not be set
 
+ # process any arguments that follow the /^-/ options
  foreach my $arg ( @ARGV )
  {
      print "Processing argument $arg\n"
@@ -168,7 +171,7 @@ empty string by C<--bar=> by an empty argument after the C<=>.
 
 While C<--baz=> may be omitted as the default value is well defined,
 the use of C<--baz=> to set an empty value results in
-the Getopt::Object constructor failing due to the double equal (C<==>).
+the Getopt::Object constructor failing on return due to the double equal (C<==>).
 
 =back
 
@@ -177,8 +180,8 @@ the Getopt::Object constructor failing due to the double equal (C<==>).
 
 =head2 With Hash References
 
-Though not used much in the samples, hash references can be used 
-for all option familys:
+Though not used much in the samples,
+hash references can be used for all option familys:
 
  use Getopt::Object;
 
@@ -197,7 +200,8 @@ for all option familys:
      command --debug --verbose --outfile=foo.txt zap1
      command --debug --verbose --outfile=foo.txt -- --zap2
 
-In these commands both of the "zaps" are command line options 
+A "--" ends option processing, all following items are arguments and not options.
+In these commands both of the "zaps" are command line arguments 
 left in @ARGV. 
 Especially "--zap2".
 The use of C<--> prevents Getopt routines from processing 
@@ -214,7 +218,7 @@ B<Getopt::Long> for the many variations, options,
 and all of the obscure and advanced behaviors available to callers
 of B<Getopt::ObjectSimple> that are not covered herein.
 Not everything transfers, but much does.
-B<Getopt::Long::Parser> does not used.
+B<Getopt::Long::Parser> is not used.
 
 B<Getopt::Object> for a more powerful extension of Getopt::ObjectSimple
 that has deeper compatibility with
@@ -222,7 +226,7 @@ B<Getopt::Long> and B<Getopt::Long::Parser>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011 to 2012 by Gilbert Healton
+Copyright 2011 to 2016 by Gilbert Healton
 
 This module is free software; you can redistribute it and/or modify 
 it under the same terms as Perl 5.8.10. For more details, see
@@ -237,7 +241,7 @@ the license in the file LICENSE.
 
 https://github.com/GilbertsHub/CPAN and see Getopt-Object therein.
 
-=head1 ACKNOLDGEMENTS
+=head1 ACKNOWLEDGEMENTS
 
 To S<Johan Vromans E<lt>jvromansE<64>squirrelE<46>nlE<gt>>,
 author of the B<Getopt::Long> module,
@@ -249,6 +253,7 @@ which is the base class used with B<Getopt::Object>.
 This program is distributed in the hope that it will be
 useful, but it is provided "as is" and without any express
 without implied warranties. For details, see the full text of
+the referenced GPL.
 
 
 =cut

@@ -15,7 +15,7 @@ name: Sys-Spec
 provides:
   Sys::Spec:
     file: lib/Sys/Spec.pm
-    version: 3.000
+    version: 3.001
   Sys::Spec::Internal::HARDWARE:
     file: lib/Sys/Spec.pm
     version: 0
@@ -42,20 +42,20 @@ provides:
     version: 0
   Sys::Spec::Module:
     file: lib/Sys/Spec/Module.pm
-    version: 3.000
+    version: 3.001
   Sys::Spec::Module::Unix:
     file: lib/Sys/Spec/Module/Unix.pm
-    version: 3.000
+    version: 3.001
   Sys::Spec::Module::Win32:
     file: lib/Sys/Spec/Module/Win32.pm
-    version: 3.000
+    version: 3.001
   Sys::Spec::Text:
     file: lib/Sys/Spec/Text.pm
-    version: 3.000
+    version: 3.001
 resources:
   license: http://dev.perl.org/licenses/
-version: 3.000
+version: 3.001
 x_repository:
   type: git
-  url: git:/github.com/GilbertsHub/CPAN/Sys-Spec
-  web: https://github.com/GilbertsHub/CPAN/Sys-Spec
+  url: git:/github.com/GilbertsHub/CPAN
+  web: https://github.com/GilbertsHub/CPAN

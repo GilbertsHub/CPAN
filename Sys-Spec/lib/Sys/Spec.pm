@@ -6,6 +6,8 @@ use 5.005;
 
 package Sys::Spec;
 
+our $VERSION = '3.001';
+
 =head1 NAME
 
 Sys::Spec - return available information on the current system
@@ -52,9 +54,9 @@ information gathered from varied sources.
 
 The published class functions and methods follow:
 
-=over +2
+=over 2
 
-=over +4
+=over 4
 
 =cut
 
@@ -64,9 +66,6 @@ use POSIX;
 use Carp;
 
 use Config;	#import %Config from perl's master config list
-
-use vars qw( $VERSION @ISA );
-($VERSION = (qw$Revision: 3.0 $)[1]) =~ s/\.(\d+)\b/sprintf(".%03d",$1)/eg;
 
 use File::Basename;
 
@@ -83,9 +82,9 @@ returning it in an object as a series of key/value pairs.
 
 Valid arguments:
 
-=over +2
+=over 2
 
-=over +5
+=over 5
 
 =item -buildnum|installnum|patchnum|runnum=version 
 =item -buildnum|installnum|patchnum|runnum => version 
@@ -134,7 +133,7 @@ sub new
 
    my $self = \do { use vars qw( *globx ); local *globx };
    bless $self, $class;
-   	# BEWARE: we have an @ISA pointing to the $class module,
+   	# BEWARE: _init() below builds @ISA pointing to the $class module,
 	#  and NOT the otherway around, as is typical.
 
    my $dataRh = $data{$self} = {};
@@ -826,9 +825,9 @@ This is only intended for use by classes extending Sys::Spec to
 enable Sys::Spec to include the output of these additional classes
 in its list of information.
 
-=over +2
+=over 2
 
-=over +2
+=over 2
 
 =item $heading:
 
@@ -857,7 +856,7 @@ with the same name, I<execpt all in lower case letters>.
 Returns number of registered headings/variables on success.
 Returns undef on error. 
 
-=over +2 
+=over 2 
 
 The order that new function names registered with B<insert>()
 are called in are guaranteed to follow
@@ -1024,8 +1023,8 @@ __END__
 
 =head1 SECURITY
 
-To help maintain the security of systems Sys::Spec gathers information on
-this author does not write code that returns 
+To help maintain the security of systems Sys::Spec gathers information 
+this author does not provide methods that return 
 unique information that can identify a specific host to outside readers.
 The closest that is returned is the host name and user name, group,
 if any are defined on the local system.
@@ -1054,8 +1053,12 @@ If the environment variable B<SYS_SPEC_TIME0> exists when B<new> is called
 it must contain the “official time” for the build,
 as returned by perl's core B<time>() function.
 
- local $ENV{'SYS_SPEC_TIME0'} = time;
+  export SYS_SPEC_TIME0=$(time -u %s);	#as shell command (Linux)
+  export SYS_SPEC_TIME0=$(perl -e 'print time,"\n"'); #general shell
+  local $ENV{'SYS_SPEC_TIME0'} = time;	#as perl statement
 
+Note: the B<local> in the perl line restricts the existance of the variable 
+to the scope of the current {block}. Omit B<local> for global scope.
 
 =head1 SEE ALSO
 

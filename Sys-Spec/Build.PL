@@ -3,11 +3,6 @@
 use strict;
 
 use Module::Build;
-use File::Spec;
-
-use vars qw( $VERSION );
-
-$VERSION = "1.000";
 
 use File::Copy ();
 
@@ -66,6 +61,7 @@ SYSSPEC_BUILD
 
 $class->new
       ( module_name     => 'Sys::Spec',
+	dist_version_from => 'VERSION_PACKAGE',
         license         => 'perl',
 	dist_abstract   => 
 		"Retrieve available information on the current system " .

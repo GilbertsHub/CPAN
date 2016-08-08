@@ -1,6 +1,7 @@
 MANIFEST
 README
 WARRANTY
+VERSION_PACKAGE
 Build.PL
 lib/Random/BestTiny.pm
 lib/Random/BestTiny/moduleList.pm
@@ -13,3 +14,5 @@ t/010-Random-BestTiny-ApiUnix.t
 t/010-Random-BestTiny-ApiWin32.t
 t/020-Random-BestTiny.t
 t/lib/tLib.pm
+META.yml
+META.json

@@ -21,8 +21,8 @@ provides:
     version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.004
+version: 0.005
 x_repository:
   type: git
-  url: git:/github.com/GilbertsHub/CPAN/Getopt-Object
-  web: https://github.com/GilbertsHub/CPAN/Getopt-Object
+  url: git:/github.com/GilbertsHub/CPAN
+  web: https://github.com/GilbertsHub/CPAN

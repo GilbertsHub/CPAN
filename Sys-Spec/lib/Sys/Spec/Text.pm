@@ -55,14 +55,13 @@ this class.
 
 package Sys::Spec::Text;
 
+our $VERSION = '3.001';
 
 use File::Basename;
 
 use Sys::Spec;			#asure SUPER class is present
 
-use vars qw( $VERSION @ISA );
-
-$VERSION = "3.000";
+use vars qw( @ISA );
 
 @ISA = qw( Sys::Spec );
 

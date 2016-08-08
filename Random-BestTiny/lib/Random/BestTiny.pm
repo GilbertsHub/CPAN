@@ -10,7 +10,7 @@ use Random::BestTiny::moduleList;
 
 use vars qw( $VERSION );
 
-$VERSION = "0.0";
+our $VERSION = '0.3';
 
 =pod
 
@@ -53,23 +53,25 @@ random numbers typical OS can provide.
 =head1 DESCRIPTION
 
 This class overcomes the typical quality limitations of perl's 
-built-in rand() method by making use of the fact that
-most modern operating systems have ways of providing 
-high-quality random numbers,
-at least in limited quantities,
-using an "entropy pool" gathered as the OS works.
-B<Rand::BestTiny> provides perl programs access to these numbers.
+built-in rand() method by accessing any high-quality random 
+numbers found in many modern kernels
+when only a limited number of random numbers are required.
+Typically this uses an "entropy pool" gathered as the kernel works.
 
-While B<Math::Random::Secure> is a larger, more complex, 
+While the traditional, and large,
+B<Math::Random::Secure> module is a 
 CPAN library that can be used to get both better and more secure 
-random numbers, 
+random numbers,
+it is much more complex,
 installing it can add over 40 modules to your system 
-and is overkill for some applications.
-Instlling it can lead to robust experiences in compile errors.
+and is overkill for smaller applications.
+Instlling it has lead this developer into 
+robust experiences in compile and dependency problems.
 
 Unlike B<Math::Random::Secure>,
-B<Random::BestTiny> does not change the built in rand() function of perl.
-Thus object-oriented calls must be used to get random numbers.
+B<Random::BestTiny> is small, pure perl,
+and does not change the built in rand() function of perl.
+Object-oriented calls must be used to get these random numbers.
 
 Note the complete lack of a seed method in this class.
 
@@ -791,6 +793,7 @@ sub quality
 =pod
 
 =item $code = Random::BestTiny->module();
+
 =item $code = $ros->module();
 
 Identifies the API being used to generate random numbers.
@@ -995,7 +998,7 @@ varies from OS to OS.
 See LIMITATIONS for common limitations developers need to be aware of.
 
 The Random::BestTiny class is designed to provide perl developers with
-a consistent API to the local quality random number generator.
+a consistent API to the local random numbers of higher qualities.
 
 Some operating systems have two-levels of random numbers:
 
@@ -1032,13 +1035,14 @@ sparing use of high quality numbers.
 Gilbert Healton got interested in random numbers while still in college,
 mostly because the classic "pseudo" random numbers were not up to doing
 what was wanted at the time.
-Then sometimes the local OS did not have a decent generator so
-Knuth's "randu" was ported to the local OS, 
-often modified to gather some enthrophy from the local OS to seed it.
+Back then OSs he was using did not have a decent generator so
+Donald Knuth's "randu" was ported to the local OS, 
+often modified to gather some smidgen of available enthrophy
+from the local OS to seed it with.
 
 Gilbert revisited random numbers at irregular intervals for the same reason.
 The "/dev/random" and "/dev/urandom" devices were pounced on when they
-became available under Linux, and later other operating systems. 
+became available under Linux then other operating systems. 
 
 Microsoft Windows remained the remaining nut to crack, 
 but that changed once a web search turned up an early sample of code now
@@ -1047,10 +1051,12 @@ best described under the Wikipedia article at:
     http://en.wikipedia.org/wiki/CryptGenRandom
 
 As Gilbert currently does not have access to other operating systems 
+with kernal based enthrophy based random numbers
 Random::BestTiny only works with UNIX compatiables and 
 Microsoft Windows operating systems with the known APIs.
 It is hoped that others can contribute APIs for other popular systems
 that are not currently supported.
+Nothing could be found in the VMS system available to Gilbert for a few years.
 
 Somehow Gilbert missed the Math::Random::Secure,
 but upon installing it found that while the functionality of it was great 
@@ -1087,7 +1093,7 @@ https://github.com/GilbertsHub/CPAN and see Random-BestTiny therein.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011 by Gilbert Healton. 
+Copyright 2011, 2016 by Gilbert Healton. 
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

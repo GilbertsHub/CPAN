@@ -614,6 +614,10 @@ For more details, see the full text of the licenses at
 <http://www.perlfoundation.org/artistic_license_1_0>,
 and <http://www.gnu.org/licenses/gpl-2.0.html>.
 
+=head1 VERSION
+
+$VERSION = 0.005
+
 =head1 REPOSITORY
 
 https://github.com/GilbertsHub/CPAN and see Getopt-Object therein.

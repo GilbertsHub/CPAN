@@ -6,6 +6,8 @@ use 5.005;
 
 package Sys::Spec::Module::Win32;
 
+our $VERSION = '3.001';
+
 =head1 NAME
 
 Sys::Spec::Module::Win32 - Provides Sys::Spec with information from
@@ -39,9 +41,6 @@ use Win32;
 
 use Sys::Spec::Module;
 
-use vars qw( $VERSION @ISA );
-
-$VERSION = "3.000";
 @ISA = ( qw( Sys::Spec::Module ) );
 
 my $module_values;	#hashref into Sys::Spec::Modules for common info

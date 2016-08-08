@@ -20,7 +20,7 @@ From within a OS-Xyz specific Sys::Spec::Module::Xyz module:
 
  use vars qw( $VERSION @ISA );
 
- $VERSION = "3.000";
+ $VERSION = "1.000";
  @ISA = ( qw( Sys::Spec::Module ) );
 
  # one-time initialization... called during Sys::Spec initialization.
@@ -75,9 +75,9 @@ package Sys::Spec::Module;
 
 use POSIX;
 
-use vars qw( $VERSION );
+our $VERSION = '3.001';
 
-$VERSION = "3.000";
+$VERSION = "3.001";
 ## NO NO NO!  See note in Sys::Spec.pm: @ISA = ( qw( Sys::Spec ) );
 
 sub iv_sys_spec_module_version

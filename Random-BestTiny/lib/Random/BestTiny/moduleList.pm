@@ -5,8 +5,7 @@ use strict;
 package Random::BestTiny::moduleList;
 
 use vars qw( $VERSION @ISA );
-
-$VERSION = "0.0";
+our $VERSION = '0.2';
 
 =pod
 
@@ -55,9 +54,13 @@ different operating systems.
 This class gives a view of the system highly warped to random number production
 and should not be used for other purposes.
 
+=head1 REPOSITORY
+
+https://github.com/GilbertsHub/CPAN   Random-BestTiny
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011 by Gilbert Healton.
+Copyright 2011, 2016 by Gilbert Healton.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

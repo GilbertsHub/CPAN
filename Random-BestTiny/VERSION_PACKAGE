@@ -1,6 +1,6 @@
 # version of package (used by Build.PL and Makefile.PL)
-	# Tends to follow version of main module, but not always.
-$VERSION = '0.005';
+        # Tends to follow version of main module, but not always.
+$VERSION = '0.003';
 #       $VERSION is value that Makefile.PL finds, so it must have 
 #                the proper number.
 

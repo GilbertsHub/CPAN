@@ -1,5 +1,6 @@
 .*.swp
 *.tmp
+bin
 blib/
 Build
 _build
@@ -7,6 +8,5 @@ Makefile
 META.*
 MYMETA.*
 pm_to_blib
-*.tar.gz
 tmp/
 ~*

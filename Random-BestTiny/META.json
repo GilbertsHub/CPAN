@@ -23,19 +23,19 @@
    "provides" : {
       "Random::BestTiny::ApiRand" : {
          "file" : "lib/Random/BestTiny/ApiRand.pm",
-         "version" : 0
+         "version" : "0.2"
       },
       "Random::BestTiny::ApiUnix" : {
          "file" : "lib/Random/BestTiny/ApiUnix.pm",
-         "version" : 0
+         "version" : "0.3"
       },
       "Random::BestTiny::ApiWin32" : {
          "file" : "lib/Random/BestTiny/ApiWin32.pm",
-         "version" : 0
+         "version" : "0.3"
       },
       "Random::BestTiny::moduleList" : {
          "file" : "lib/Random/BestTiny/moduleList.pm",
-         "version" : 0
+         "version" : "0.2"
       }
    },
    "release_status" : "stable",
@@ -44,5 +44,10 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.1"
+   "version" : "0.003",
+   "x_repository" : {
+      "type" : "git",
+      "url" : "git:/github.com/GilbertsHub/CPAN",
+      "web" : "https://github.com/GilbertsHub/CPAN"
+   }
 }

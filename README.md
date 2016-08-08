@@ -39,6 +39,10 @@ environments, or maintaining build numbers.
 
 # Interesting Resources About CPAN
 
+* http://www.cpan.org/modules/04pause.html
+  * perl -MExtUtils::MakeMaker -le 'print MM->parse_version(shift)' 'file'
 * http://search.cpan.org/~dagolden/CPAN-Meta-2.150005/lib/CPAN/Meta/Spec.pm 
 * http://neilb.org/2015/10/18/spotters-guide.html
-
+* http://modernperlbooks.com/mt/2009/07/version-confusion.html
+* http://stackoverflow.com/questions/1454202/how-can-i-automatically-update-perl-modules-version-with-git
+* http://www.perl.com/pub/2005/04/14/cpan_guidelines.html

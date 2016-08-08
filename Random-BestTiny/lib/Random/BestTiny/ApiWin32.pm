@@ -9,7 +9,7 @@ package Random::BestTiny::ApiWin32;
 
 use vars qw( $VERSION @ISA );
 
-$VERSION = "0.0";
+our $VERSION = '0.3';
 @ISA = qw( Random::BestTiny );
 
 
@@ -150,7 +150,7 @@ Random::BestTiny::ApiWin32 - Random::BestTiny API for Microsoft Windows
 
 This is the low-level Random::BestTiny class for 
 Microsoft Windows operating systems under Active State perl,
-and other operating systems that share a 
+and other perl implementations that share a 
 sufficiently compatiable Win32::API module.
 
 =head1 ALSO SEE
@@ -163,9 +163,13 @@ See http://use.perl.org/comments.pl?sid=42238&cid=67234 for more.
 
 http://wiki.nil.com/Pre-Shared_Key_Generation
 
+=head1 REPOSITORY
+
+https://github.com/GilbertsHub/CPAN   Random-BestTiny
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011 by Gilbert Healton.
+Copyright 2011, 2016 by Gilbert Healton.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

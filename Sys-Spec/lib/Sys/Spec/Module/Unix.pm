@@ -6,6 +6,8 @@ use 5.005;
 
 package Sys::Spec::Module::Unix;
 
+our $VERSION = '3.001';
+
 =head1 NAME
 
 Sys::Spec::Module::Unix - Provides Sys::Spec with information from
@@ -54,9 +56,6 @@ use FileHandle;
 
 use Sys::Spec::Module;
 
-use vars qw( $VERSION @ISA );
-
-$VERSION = "3.000";
 @ISA = ( qw( Sys::Spec::Module ) );
 
 my $module_values;	#hashref into Sys::Spec::Modules for common info

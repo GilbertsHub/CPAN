@@ -4,7 +4,7 @@ package Random::BestTiny::ApiRand;
 
 use vars qw( $VERSION @ISA );
 
-$VERSION = "0.0";
+our $VERSION = '0.2';
 @ISA = qw( Random::BestTiny );
 
 
@@ -129,6 +129,10 @@ See the POD documentation in APiXxx.pod for information common to all APIs.
 If not partnered with B<Random::BestTiny::APiXxx>
 the quality of the random number is suspect as
 this uses perl's native random number method.
+
+=head1 REPOSITORY
+
+https://github.com/GilbertsHub/CPAN   Random-BestTiny
 
 =head1 COPYRIGHT AND LICENSE
 

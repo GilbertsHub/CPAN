@@ -1,7 +1,7 @@
 # Makefile.PL
 
 use vars qw( $VERSION );
-$VERSION = "0.2";
+use vars qw( $VERSION_PACKAGE );
 
 use ExtUtils::MakeMaker;
 
@@ -9,6 +9,7 @@ WriteMakefile(
     NAME            => 'Getopt::Object',
     VERSION_FROM    => 'VERSION_PACKAGE',
 
+    PL_FILES        => {},		#assure MakeMaker never runs Build.PL
     META_MERGE	    => {
 
 	'meta-spec'   => { version => 2 },

@@ -5,9 +5,9 @@ package Random::BestTiny::ApiUnix;
 use IO::File ();
 use File::Spec ();
 
-use vars qw( $VERSION @ISA );
+use vars qw( @ISA );
 
-$VERSION = "0.0";
+our $VERSION = '0.3';
 @ISA = qw( Random::BestTiny );
 
 
@@ -207,15 +207,19 @@ random numbers.
 
 A key part of the design of this class is to have only a single 
 file handle open for each quality of random numbers 
-regardless of how many objects of that quality are opened.
+regardless of how many objects of that quality are active.
 
 =head1 ALSO SEE
 
 See the POD documentation in APiXxx.pod for information common to all APIs.
 
+=head1 REPOSITORY
+
+https://github.com/GilbertsHub/CPAN   Random-BestTiny
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011 by Gilbert Healton.
+Copyright 2011, 2016 by Gilbert Healton.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
