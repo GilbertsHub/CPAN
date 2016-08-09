@@ -16,6 +16,7 @@ $class = Module::Build->new
 	dist_abstract   => 
 		"Extend Getopt::Long to easily create and maintain command line options",
 	dist_author	=> 'Gilbert Healton <gilbert@healton.net>',
+	configure_requires => { 'Module::Build' => 0.40 },
 
         meta_merge      => {
 	    repository      => {

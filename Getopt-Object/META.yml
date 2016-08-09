@@ -4,7 +4,7 @@ author:
   - 'Gilbert Healton <gilbert@healton.net>'
 build_requires: {}
 configure_requires:
-  Module::Build: 0.40
+  Module::Build: 0.4
 dynamic_config: 1
 generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
 license: perl

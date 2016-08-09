@@ -1,4 +1,4 @@
-Getopt::Object and Getopt::ObjectSimple are copyright (C) 2011-2012 by Gilbert Healton.
+Getopt::Object and Getopt::ObjectSimple are copyright (C) 2011-2012, 2016 by Gilbert Healton
 
 OVERVIEW
 ---------------------------
@@ -23,11 +23,6 @@ including:
         the list of options the singleton will honor. This requires 
         no special coordination between the module and the main 
         beyond using the singleton constructor. 
-
-AUTHOR
----------------------------
-   Gilbert Healton   gilbert-healton-net
-
 
 INSTALLING
 ---------------------------
@@ -64,19 +59,24 @@ REBUILDING
 
 
 
+AUTHOR
+---------------------------
+   Gilbert Healton   gilbertAThealtonDOTnet
+
+
+
 LICENSE INFORMATION
 ---------------------------
 This module is free software; you can redistribute it and/or modify it 
 under the same terms as Perl 5.8.10. For more details, see the full 
 text of the licenses at 
-<http://www.perlfoundation.org/artistic_license_1_0>,
+<http://www.perlfoundation.org/artistic_license_2_0>,
 and <http://www.gnu.org/licenses/gpl-2.0.html>.
 
 This program is distributed in the hope that it will be
 useful, but it is provided “as is” and without any express
 or implied warranties. For details, see the full text of
-the license in the file LICENSE.
-
+the license in the directory LICENSES.
 
 
 REFERENCES

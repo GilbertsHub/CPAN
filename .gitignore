@@ -5,8 +5,14 @@ blib/
 Build
 _build
 Makefile
-META.*
 MYMETA.*
 pm_to_blib
 tmp/
+### The above are also mapped into MANIFEST.SKIP so 
+### they don't get delivered in the package.
+### the following do NOT apper in MANIFEST.SKIP so
+### they can be delivered in the package.
+LICENSES
+MANIFEST.SKIP
+META.*
 ~*

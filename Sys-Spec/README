@@ -1,3 +1,5 @@
+Sys::Spec is copyright 2008, 2016 by Gilbert Healton.
+
 This package provides a program, and supporting class, that 
 provide details of frequently used characteristics of the
 local host to developers analyzing execution, working build 
@@ -7,12 +9,46 @@ environments, or maintaining build numbers.
 
   Sys::Spec supporting class for build_num.
 
+--------------------------------------------------------------
+Module::Build INSTALLS
+--------------------------------------------------------------
+
+If the Module::Build module is available, the following is likely 
+the preferred way of installing Sys::Spec and friends:
+
+    perl Build.PL
+    perl ./Build 
+    perl ./Build test     #(will fail on older perls without Test::More)
+    perl ./Build install
+
+To test if your local perl supports Build.PL, execute the following
+command. If it completes without error then Build.PL is available.
+
+    perl -MModule::Build -e 1
+
+To test if Test::More is available, execute the following command:
+
+    perl -MTest::More -e 1
 
 
-COPYRIGHT, LICENSE, and WARRANTY
+--------------------------------------------------------------
+Legacy (e.g., UNIX/POSIX/LINUX) Installs
+--------------------------------------------------------------
 
-This program and documentation is copyright 2008 by Gilbert Healton.
-All rights reserved.
+The following legacy installation is available to those without
+Module::Build but with commands that are sufficiently POSIX compatible.
+
+    perl Makefile.PL  [PREFIX=$HOME/alt-perl]
+    make 
+    make test 		# (will fail on older perls without Test::More)
+    make install
+
+#end
+
+
+--------------------------------------------------------------
+LICENSE, and WARRANTY
+--------------------------------------------------------------
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
