@@ -8,9 +8,9 @@ Getopt::Object and Getopt::ObjectSimple provide command line parsing
 in true object format adding additional features to Getopt::Long this
 author finds useful. Getopt::ObjectSimple provides a minimalist
 approach with Getopt::Object providing the most features for
-larger applications where more complex options can be very useful. 
+larger applications where more complex, ane obscure, features have proved useful. 
 
-* Maintenance tends to be a lot easier.
+* Maintenance of code capturing options tends to be much easier.
 * Mandatory options: options can be marked as mandatory. Constructor fails if such options are not sufficiently defined.
 * Once the main object has been created subsequent code can request singleton objects to obtain access to all arguments. 
    * The main start code no longer needs to publish options to other parts of the program.
